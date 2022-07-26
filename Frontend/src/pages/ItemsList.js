@@ -1,23 +1,36 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Card from 'react-bootstrap/Card';
+import CardGroup from 'react-bootstrap/CardGroup';
+import Button from 'react-bootstrap/Button';
 
 const TaskItem = props => (
-    <tr>
-        <td>{props.item.taskId}</td>
-        <td>{props.item.taskName}</td>
-        <td>{props.item.taskDescription}</td>
-    </tr>
+        <div>
+        <Card style={{ margin: '1rem', padding: '1rem' }}>
+        <Card.Title>{props.item.taskName}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{props.item.taskId}</Card.Subtitle>
+        <Card.Text>{props.item.taskDescription}</Card.Text>
+        <Card.Text>Status: {props.item.taskStatus}</Card.Text>
+        <Card.Text>Start Date: {props.item.startDate}</Card.Text>
+        <Card.Text>End Date: {props.item.endDate}</Card.Text>
+        <Button variant="primary" visible='false'>{(props.item.taskStatus == "not started")?"Start Task":"Complete Task"}</Button> 
+        </Card>
+    </div>
+
+     
 )
 
 const ProjectItem = props => (
-    <tr>
-        <td>{props.item.projectId}</td>
-        <td>{props.item.projectName}</td>
-        <td>{props.item.projectStatus}</td>
-        <td>{props.item.tasks.map(itemTask => {
+    <div>
+        <Card style={{ margin: '1rem', padding: '1rem'  }}>
+        <Card.Title>{props.item.projectName}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{props.item.projectId}</Card.Subtitle>
+        <Card.Text>Status: {props.item.projectStatus}</Card.Text>
+        <CardGroup>{props.item.tasks.map(itemTask => {
             return <TaskItem item={itemTask} key={itemTask.taskId}/>;
-        })}</td>
-    </tr>
+        })} </CardGroup>
+        </Card>
+    </div>
 )
 
 export default class ItemsList extends React.Component{
@@ -47,19 +60,18 @@ export default class ItemsList extends React.Component{
         this.setState({
            //todo get real projects list and filter only projects that user assigned  to them
            list: [{projectId: "4", projectName: "project1", usersAssigned: [], projectStatus: "not completed", totalCost: 0, tasks: [{taskId: "1", taskName: "task1", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}, {taskId: "2", taskName: "task2", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}]},
-            {projectId: "5", projectName: "project1", usersAssigned: [], projectStatus: "not completed", totalCost: 0, tasks: [{taskId: "3", taskName: "task3", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}, {taskId: "4", taskName: "task4", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}]}] //todo get from db
+            {projectId: "5", projectName: "project2", usersAssigned: [], projectStatus: "not started", totalCost: 0, tasks: [{taskId: "3", taskName: "task3", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not completed"}, {taskId: "4", taskName: "task4", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}, {taskId: "5", taskName: "task5", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}]}] //todo get from db
 
         })
     }
     render(){
         return(
             <div>
-                <table>
-                    <tbody>
-                        { this.list() }
-                    </tbody>
-                    
-                </table>
+                <CardGroup>
+                    { this.list() }
+                </CardGroup>
+                        
+                 
             </div>
         );
     }
