@@ -13,7 +13,9 @@ const TaskItem = props => (
         <Card.Text>Status: {props.item.taskStatus}</Card.Text>
         <Card.Text>Start Date: {props.item.startDate}</Card.Text>
         <Card.Text>End Date: {props.item.endDate}</Card.Text>
-        <Button variant="primary" visible='false'>{(props.item.taskStatus == "not started")?"Start Task":"Complete Task"}</Button> 
+        <Card.Text>Assigned to: {props.item.userAssigned}</Card.Text>
+        <Button variant="primary" hidden={(false)? true:false}  >{(props.item.taskStatus == "not started")?"Start Task":"Complete Task"}</Button> 
+        {/* //todo hide/disable button if task completed or user doesnt assugned to the task OR if task is completed */}
         </Card>
     </div>
 
@@ -59,7 +61,7 @@ export default class ItemsList extends React.Component{
     componentDidMount(){
         this.setState({
            //todo get real projects list and filter only projects that user assigned  to them
-           list: [{projectId: "4", projectName: "project1", usersAssigned: [], projectStatus: "not completed", totalCost: 0, tasks: [{taskId: "1", taskName: "task1", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}, {taskId: "2", taskName: "task2", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}]},
+           list: [{projectId: "4", projectName: "project1", usersAssigned: [], projectStatus: "not completed", totalCost: 0, tasks: [{taskId: "1", taskName: "task1", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}, {taskId: "2", taskName: "task2", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started", userAssigned: 'user1'}]},
             {projectId: "5", projectName: "project2", usersAssigned: [], projectStatus: "not started", totalCost: 0, tasks: [{taskId: "3", taskName: "task3", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not completed"}, {taskId: "4", taskName: "task4", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}, {taskId: "5", taskName: "task5", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}]}] //todo get from db
 
         })
