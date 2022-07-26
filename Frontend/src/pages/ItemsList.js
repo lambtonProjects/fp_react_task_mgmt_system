@@ -14,7 +14,7 @@ const TaskItem = props => (
         <Card.Text>Start Date: {props.item.startDate}</Card.Text>
         <Card.Text>End Date: {props.item.endDate}</Card.Text>
         <Card.Text>Assigned to: {props.item.userAssigned}</Card.Text>
-        <Button variant="primary" hidden={(false)? true:false}  >{(props.item.taskStatus == "not started")?"Start Task":"Complete Task"}</Button> 
+        <Button variant="primary" hidden={(false)? true:false} onClick={() => {console.log("here will be action - save status and refresh the page")}} >{(props.item.taskStatus == "not started")?"Start Task":"Complete Task"}</Button> 
         {/* //todo hide/disable button if task completed or user doesnt assugned to the task OR if task is completed */}
         </Card>
     </div>
@@ -43,12 +43,12 @@ export default class ItemsList extends React.Component{
         this.onChangeStatus = this.onChangeStatus.bind(this);
 
         this.state = {
-            // username: '', //todo etc
             list: [],
         }
     };
 
     onChangeStatus(e){
+        console.log("from function");
         this.setState({
             //status: e.target.value //target is a textbox
         });
