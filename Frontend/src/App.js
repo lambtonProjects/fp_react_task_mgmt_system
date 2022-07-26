@@ -5,6 +5,7 @@ import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from './pages/PrivateRoute';
 import Error from "./pages/Error";
+import ItemsList from "./pages/ItemsList";
 
 import "./index.css";
 
@@ -19,6 +20,7 @@ function App() {
           </PrivateRoute>
         }/>
         <Route path="/*" element={<Error />} />
+        <Route path="/list" element={<ItemsList />} />
       </Routes>
     </BrowserRouter>
   );
