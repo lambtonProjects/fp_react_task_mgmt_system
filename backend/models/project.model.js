@@ -9,7 +9,8 @@ const projectSchema = new Schema({
     unique: true,
     trim: true,
     minlength: 3
-  }
+  },
+  users: [mongoose.Types.ObjectId],
 }, {
   timestamps: true,
 });

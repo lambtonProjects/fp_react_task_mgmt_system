@@ -18,6 +18,10 @@ const userSchema = new Schema({
     type: Boolean,
     required: true
   },
+  hourlyRate:{
+    type:Number,
+    required:true
+  }
 
 }, {
   timestamps: true,
