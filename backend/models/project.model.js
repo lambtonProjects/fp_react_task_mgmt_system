@@ -13,10 +13,16 @@ const projectSchema = new Schema({
   users: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    default: []
-  }],
+    default: [],
+    unique: true
+  }]
 }, {
   timestamps: true,
+});
+
+projectSchema.pre('save', function (next) {
+  this.users = _.uniq(this.users);
+  next();
 });
 
 const Project = mongoose.model('Project', projectSchema);

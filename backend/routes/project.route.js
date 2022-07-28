@@ -64,4 +64,17 @@ router.route('/edit').post((req, res) => {
 
 });
 
+//Example GET Request
+// http://localhost:4000/projects/addUser?user=62db87636a006bd869cf37cc&project=62db87636a006bd869cf37ca
+router.route('/addUser').get((req, res) => {
+  const projectId = req.query.project;
+  const userId = req.query.user;
+  
+
+   Project.updateOne({id:projectId},{$addToSet:{users:userId}})
+   .then(() => res.json('project edited!'))
+   .catch(err => res.status(400).json('Error: ' + err));
+
+});
+
 module.exports = router;
