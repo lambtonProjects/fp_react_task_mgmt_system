@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -42,10 +42,8 @@ function Login() {
         setErrorMessages({ name: "pass", message: errors.pass });
       } else {
         setIsSubmitted(true);
-        localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("isAdmin", userData.isAdmin);
-        localStorage.setItem("name", userData.name);
-        redirect();
+        localStorage.setItem("name", userData.username);
       }
     } else {
       // Username not found
@@ -53,9 +51,13 @@ function Login() {
     }
   };
 
-  const redirect = () => {
+  useEffect(() => {
+    console.log('isSubmitted', isSubmitted);
+    if(isSubmitted){
+      localStorage.setItem("isAuthenticated", isSubmitted);
       navigate('/', { replace: true });
-  }
+    }
+  }, [isSubmitted, navigate])
 
   // Generate JSX code for error message
   const renderErrorMessage = (name) =>
