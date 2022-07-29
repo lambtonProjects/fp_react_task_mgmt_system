@@ -17,7 +17,7 @@ const taskSchema = new Schema({
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: false },
   assignee: { type: Schema.Types.ObjectId, ref: 'User' },
-  project : { type: Schema.Types.ObjectId, ref: 'Project' },
+  project : { type: Schema.Types.ObjectId, ref: 'Project', required: true },
 }, {
   timestamps: true,
 });
