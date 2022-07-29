@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import Button from 'react-bootstrap/Button';
+import MyNavbar from "./MyNavbar";
 
 const TaskItem = props => (
         <div>
@@ -69,6 +70,7 @@ export default class ItemsList extends React.Component{
     render(){
         return(
             <div>
+                <MyNavbar />
                 <CardGroup>
                     { this.list() }
                 </CardGroup>
