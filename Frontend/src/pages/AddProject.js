@@ -29,7 +29,7 @@ export default class AddProject extends Component {
             users: this.state.users,
         }
 
-        axios.post('http://localhost:3000/projects/add', project)
+        axios.post('http://localhost:4000/projects/add', project)
         .then(res => console.log(res.data));
         window.location = '/';
     }

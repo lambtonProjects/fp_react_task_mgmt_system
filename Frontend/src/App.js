@@ -7,6 +7,7 @@ import PrivateRoute from './pages/PrivateRoute';
 import Error from "./pages/Error";
 import ItemsList from "./pages/ItemsList";
 import AddProject from "./pages/AddProject";
+import AddUser from "./pages/AddUser";
 
 import "./index.css";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/*" element={<Error />} />
         <Route path="/list" element={<ItemsList />} />
         <Route path="/addProject" element={<AddProject />} />
+        <Route path="/addUser" element={<AddUser />} />
       </Routes>
     </BrowserRouter>
   );
