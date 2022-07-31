@@ -23,7 +23,7 @@ export default class AddUser extends Component {
 
     onChangeName(e){
         this.setState({
-            name: e.target.value
+            username: e.target.value
         });
     }
     onChangePassword(e){
@@ -45,7 +45,7 @@ export default class AddUser extends Component {
     onSubmit(e){
         e.preventDefault();
         const user = {
-            username: this.state.name,
+            username: this.state.username,
             password: this.state.password,
             hourlyRate: this.state.hourlyRate,
             isAdmin: this.state.isAdmin
@@ -53,7 +53,7 @@ export default class AddUser extends Component {
 
         axios.post('http://localhost:4000/users/add', user)
         .then(res => console.log(res.data));
-       // window.location = '/';
+        window.location = '/';
     }
 
     
