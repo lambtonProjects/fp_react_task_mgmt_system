@@ -38,7 +38,8 @@ export default class AddTask extends Component {
        .then(res => {
         if(res.data.length > 0){
             this.setState({
-                membersList: res.data.map(user => user._id)
+                membersList: res.data.map(user => user._id),
+                assignee:res.data[0]._id
             })
         }
        }) 
@@ -47,7 +48,8 @@ export default class AddTask extends Component {
        .then(res => {
         if(res.data.length > 0){
             this.setState({
-                projectsList: res.data.map(project => project._id)
+                projectsList: res.data.map(project => project._id),
+                project:res.data[0]._id
             })
         }
        }) 
@@ -151,20 +153,20 @@ render(){
                                         }
                                     </select>
                                 </div> 
-                                <div className="form-group">
+                                <div className="input-container">
                                     <label>Start Date </label>
                                     <div>
-                                        {/* <DatePicker 
+                                        <DatePicker 
                                         selected={this.state.startDate} 
-                                        onChange={this.onChangeStartDate} /> */}
+                                        onChange={this.onChangeStartDate} />
                                     </div>    
                                 </div> 
-                                <div className="form-group">
+                                <div className="input-container">
                                     <label>End Date </label>
                                     <div>
-                                        {/* <DatePicker 
+                                        <DatePicker 
                                         selected={this.state.endDate} 
-                                        onChange={this.onChangeEndDate} /> */}
+                                        onChange={this.onChangeEndDate} />
                                     </div>    
                                 </div> 
                               
