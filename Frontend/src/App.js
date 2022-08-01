@@ -8,6 +8,7 @@ import Error from "./pages/Error";
 import ItemsList from "./pages/ItemsList";
 import AddProject from "./pages/AddProject";
 import AddUser from "./pages/AddUser";
+import AddTask from "./pages/AddTask";
 
 import "./index.css";
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/list" element={<ItemsList />} />
         <Route path="/addProject" element={<AddProject />} />
         <Route path="/addUser" element={<AddUser />} />
+        <Route path="/addTask" element={<AddTask />} />
       </Routes>
     </BrowserRouter>
   );

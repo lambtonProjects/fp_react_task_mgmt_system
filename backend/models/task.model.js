@@ -14,6 +14,10 @@ const taskSchema = new Schema({
     type: String,
     required: true
   },
+  status: {
+    type: String,
+    default: "Not Started",
+  },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: false },
   assignee: { type: Schema.Types.ObjectId, ref: 'User' },
