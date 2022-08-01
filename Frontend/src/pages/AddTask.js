@@ -103,9 +103,9 @@ export default class AddTask extends Component {
         }
 
         console.log(task);
-        // axios.post('http://localhost:4000/tasks/add', task)
-        // .then(res => console.log(res.data));
-        // window.location = '/';
+        axios.post('http://localhost:4000/tasks/add', task)
+        .then(res => console.log(res.data));
+        window.location = '/';
     }
 
     
@@ -205,6 +205,7 @@ render(){
                                 <div className="button-container">
                                     <input type="submit" value="Create" />
                                 </div>
+                                
                             </form>
                         </div>
                  
