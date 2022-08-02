@@ -21,7 +21,7 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/" element={
           <PrivateRoute>
-            <Dashboard/>
+            <ItemsList/>
           </PrivateRoute>
         }/>
         <Route path="/*" element={<Error />} />

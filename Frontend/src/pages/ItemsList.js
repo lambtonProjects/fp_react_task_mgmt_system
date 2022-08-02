@@ -1,40 +1,39 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import Button from 'react-bootstrap/Button';
 import MyNavbar from "./MyNavbar";
+import axios from 'axios';
+
 
 const TaskItem = props => (
         <div>
         <Card style={{ margin: '1rem', padding: '1rem' }}>
-        <Card.Title>{props.item.taskName}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">{props.item.taskId}</Card.Subtitle>
-        <Card.Text>{props.item.taskDescription}</Card.Text>
-        <Card.Text>Status: {props.item.taskStatus}</Card.Text>
+        <Card.Title>{props.item.name}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{props.item._id}</Card.Subtitle>
+        <Card.Text>{props.item.description}</Card.Text>
+        <Card.Text>Status: {props.item.status}</Card.Text>
         <Card.Text>Start Date: {props.item.startDate}</Card.Text>
         <Card.Text>End Date: {props.item.endDate}</Card.Text>
-        <Card.Text>Assigned to: {props.item.userAssigned}</Card.Text>
-        <Button variant="primary" hidden={(false)? true:false} onClick={() => {console.log("here will be action - save status and refresh the page")}} >{(props.item.taskStatus == "not started")?"Start Task":"Complete Task"}</Button> 
-        {/* //todo hide/disable button if task completed or user doesnt assugned to the task OR if task is completed */}
+        <Card.Text>Assigned to: {props.item.assignee}</Card.Text>
+        <Card.Text>Project: {props.item.project}</Card.Text>
+        <Button variant="primary" hidden={(props.item.status === "Completed")? true:false} onClick={() => {
+            if(props.item.status === "Not Started"){
+                //change status to started
+            } else if (props.item.status === "Started") {
+                //change status to completed
+                //show message about hours
+                //save hours of work
+
+            }
+            
+        }} >{(props.item.status == "Not Started")?"Start Task":"Complete Task"}</Button> 
         </Card>
     </div>
 
      
 )
 
-const ProjectItem = props => (
-    <div>
-        <Card style={{ margin: '1rem', padding: '1rem'  }}>
-        <Card.Title>{props.item.projectName}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">{props.item.projectId}</Card.Subtitle>
-        <Card.Text>Status: {props.item.projectStatus}</Card.Text>
-        <CardGroup>{props.item.tasks.map(itemTask => {
-            return <TaskItem item={itemTask} key={itemTask.taskId}/>;
-        })} </CardGroup>
-        </Card>
-    </div>
-)
 
 export default class ItemsList extends React.Component{
 
@@ -45,6 +44,7 @@ export default class ItemsList extends React.Component{
 
         this.state = {
             list: [],
+            tasks:[]
         }
     };
 
@@ -56,16 +56,21 @@ export default class ItemsList extends React.Component{
     }
     list(){
         return this.state.list.map(item => {
-            return <ProjectItem item={item} key={item.projectId}/>;
+            return <TaskItem item={item} key={item._id}/>;
         })
     }
     componentDidMount(){
-        this.setState({
-           //todo get real projects list and filter only projects that user assigned  to them
-           list: [{projectId: "4", projectName: "project1", usersAssigned: [], projectStatus: "not completed", totalCost: 0, tasks: [{taskId: "1", taskName: "task1", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}, {taskId: "2", taskName: "task2", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started", userAssigned: 'user1'}]},
-            {projectId: "5", projectName: "project2", usersAssigned: [], projectStatus: "not started", totalCost: 0, tasks: [{taskId: "3", taskName: "task3", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not completed"}, {taskId: "4", taskName: "task4", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}, {taskId: "5", taskName: "task5", taskDescription: "description", startDate: "", endDate: "", prerequisite: [], taskStatus: "not started"}]}] //todo get from db
 
+        axios.get('http://localhost:4000/tasks/')
+        .then(res => {
+         if(res.data.length > 0){
+             this.setState({
+                 tasks: res.data.map(task => task),
+                 list: this.state.tasks, //todo filter tasks for not admin user
+             })
+         }
         })
+
     }
     render(){
         return(
@@ -74,8 +79,6 @@ export default class ItemsList extends React.Component{
                 <CardGroup>
                     { this.list() }
                 </CardGroup>
-                        
-                 
             </div>
         );
     }
