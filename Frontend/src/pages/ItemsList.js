@@ -117,6 +117,7 @@ export default class ItemsList extends React.Component{
             list: [],
             tasks:[],
             isAdmin: true,
+            currentUserId: ""
         }
 
     };
@@ -128,17 +129,19 @@ export default class ItemsList extends React.Component{
         })
     }
     componentDidMount(){
+        this.state.isAdmin = (localStorage.getItem("isAdmin") === "true");
+        this.state.currentUserId = localStorage.getItem("id")
 
         axios.get('http://localhost:4000/tasks/')
         .then(res => {
          if(res.data.length > 0){
              this.setState({
                  tasks: res.data.map(task => task),
-                 list: this.state.tasks, //todo filter tasks for not admin user
+                 list: (this.state.isAdmin)?this.state.tasks: res.data.filter(task => task.assignee === this.state.currentUserId),
              })
          }
         })
-        //todo check current user status (isAdmin?)
+       
 
     }
 

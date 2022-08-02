@@ -12,12 +12,14 @@ function Login() {
     {
       username: "admin",
       password: "admin",
-      isAdmin: true
+      isAdmin: true, 
+      _id: "62db87636a006bd869cf37ca"
     },
     {
       username: "user",
       password: "user",
-      isAdmin: false
+      isAdmin: false,
+      _id: "62db87636a006bd869cf37ca"
     }
   ];
 
@@ -44,6 +46,7 @@ function Login() {
         setIsSubmitted(true);
         localStorage.setItem("isAdmin", userData.isAdmin);
         localStorage.setItem("name", userData.username);
+        localStorage.setItem("id", userData._id);
       }
     } else {
       // Username not found
