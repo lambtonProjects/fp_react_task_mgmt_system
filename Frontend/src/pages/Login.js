@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Login() {
   // React States
@@ -8,20 +9,7 @@ function Login() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // User Login info
-  const database = [
-    {
-      username: "admin",
-      password: "admin",
-      isAdmin: true, 
-      _id: "62db87636a006bd869cf37ca"
-    },
-    {
-      username: "user",
-      password: "user",
-      isAdmin: false,
-      _id: "62db87636a006bd869cf37ca"
-    }
-  ];
+
 
   const errors = {
     uname: "invalid username",
@@ -35,23 +23,30 @@ function Login() {
     var { uname, pass } = document.forms[0];
 
     // Find user login info
-    const userData = database.find((user) => user.username === uname.value);
-
+    // const userData = database.find((user) => user.username === uname.value);
+    
+    axios.get('http://localhost:4000/users/?username='+uname.value)
+            .then(res =>{
+            const userData=res.data
+            console.log(userData)
+              if (userData) {
+                if (userData.password !== pass.value) {
+                  // Invalid password
+                  setErrorMessages({ name: "pass", message: errors.pass });
+                } else {
+                  setIsSubmitted(true);
+                  localStorage.setItem("isAdmin", userData.isAdmin);
+                  localStorage.setItem("name", userData.username);
+                  localStorage.setItem("id", userData._id);
+                }
+              } else {
+                // Username not found
+                setErrorMessages({ name: "uname", message: errors.uname });
+              }
+            } )
+            .catch(err => console.log(err))
     // Compare user info
-    if (userData) {
-      if (userData.password !== pass.value) {
-        // Invalid password
-        setErrorMessages({ name: "pass", message: errors.pass });
-      } else {
-        setIsSubmitted(true);
-        localStorage.setItem("isAdmin", userData.isAdmin);
-        localStorage.setItem("name", userData.username);
-        localStorage.setItem("id", userData._id);
-      }
-    } else {
-      // Username not found
-      setErrorMessages({ name: "uname", message: errors.uname });
-    }
+    
   };
 
   useEffect(() => {
