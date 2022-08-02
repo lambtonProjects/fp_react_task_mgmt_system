@@ -22,6 +22,7 @@ const taskSchema = new Schema({
   endDate: { type: Date, required: false },
   assignee: { type: Schema.Types.ObjectId, ref: 'User' },
   project : { type: Schema.Types.ObjectId, ref: 'Project', required: true },
+  hours: {type: Number, required: false, default: 0}
 }, {
   timestamps: true,
 });

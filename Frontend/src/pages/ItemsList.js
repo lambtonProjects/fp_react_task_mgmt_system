@@ -7,6 +7,7 @@ import axios from 'axios';
 
 
 const TaskItem = props => (
+    
         <div>
         <Card style={{ margin: '1rem', padding: '1rem' }}>
         <Card.Title>{props.item.name}</Card.Title>
@@ -19,11 +20,26 @@ const TaskItem = props => (
         <Card.Text>Project: {props.item.project}</Card.Text>
         <Button variant="primary" hidden={(props.item.status === "Completed")? true:false} onClick={() => {
             if(props.item.status === "Not Started"){
-                //change status to started
+                // change status to started
+                const task = {
+                    id: props.item._id,
+                    name: props.item.name,
+                    description: props.item.description,
+                    status: "Started",
+                    startDate: props.item.startDate,
+                    endDate: props.item.endDate,
+                    assignee: props.item.assignee,
+                    project: props.item.project,
+                }
+        
+                axios.post('http://localhost:4000/tasks/edit', task)
+                .then(res => console.log(res.data));
+                
+                window.location.reload(false);
             } else if (props.item.status === "Started") {
-                //change status to completed
-                //show message about hours
-                //save hours of work
+                //todo change status to completed
+                //todo show message about hours
+                //todo save hours of work
 
             }
             
@@ -44,7 +60,8 @@ export default class ItemsList extends React.Component{
 
         this.state = {
             list: [],
-            tasks:[]
+            tasks:[],
+            isAdmin: true
         }
     };
 
@@ -56,7 +73,7 @@ export default class ItemsList extends React.Component{
     }
     list(){
         return this.state.list.map(item => {
-            return <TaskItem item={item} key={item._id}/>;
+            return <TaskItem item={item} key={item._id} user={this.state.isAdmin}/>;
         })
     }
     componentDidMount(){
@@ -70,8 +87,10 @@ export default class ItemsList extends React.Component{
              })
          }
         })
+        //todo check current user status (isAdmin?)
 
     }
+
     render(){
         return(
             <div>
