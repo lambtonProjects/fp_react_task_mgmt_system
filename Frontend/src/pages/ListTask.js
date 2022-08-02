@@ -17,13 +17,39 @@ function ListTask() {
     const [task, setTask] = useState(null);
     const [show, setShow] = useState(false);
     const {setError, handleSubmit, control, reset, formState: {errors}, getValues} = useForm();
+    
+    const onSubmit = (data, e) => {
+      //Prevent page reload
+      e.preventDefault();
+      const taska = {
+        id: task._id,
+        name: data.name,
+        description: data.description,
+        status: data.statusVal.value,
+        startDate: task.startDate,
+        endDate: task.endDate,
+        assignee: task.assignee,
+        project: task.project,
+        hours: task.hours
+      }
+      
+      axios.post('http://localhost:4000/tasks/edit', taska)
+      .then(res => {
+        console.log(res.data)
+      }).catch(err => console.log(err));
+      
+      window.location.reload(false);
+      setShow(false);
+      setTask(null);
+    };
+    const onError = (errors, e) => console.log(errors, e);
 
 
     const handleClose = () => {
         setShow(false);
         setTask(null);
         console.log("button clicked");
-      };
+    };
     
     const handleShow = (task) => { 
         setTask(task)
@@ -98,7 +124,7 @@ function ListTask() {
           <Modal.Title>Edit Task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit(onSubmit, onError)}>
             <Form.Group className="mb-3" controlId="formName">
                 <Form.Label>Name</Form.Label>
                 <Controller control={control} name="name" defaultValue="" render={({ field: { onChange, onBlur, value, ref } }) => (
@@ -132,13 +158,9 @@ function ListTask() {
                 />
                 <Form.Control.Feedback type="invalid">{errors.name?.message}</Form.Control.Feedback>
             </Form.Group>
-
+            <Button variant="primary" type="submit">Save Changes</Button>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" onClick={handleClose}>Save Changes</Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );
