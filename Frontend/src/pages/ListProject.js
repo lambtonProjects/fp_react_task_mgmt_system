@@ -67,6 +67,11 @@ export default class ListProject extends React.Component {
     }) 
 }
 
+findUserRate(id){
+    let rate = this.state.users.filter(user => user._id === id)[0].hourlyRate;
+    console.log(rate);
+    return rate;
+}
 
     componentDidMount(){
         axios.get('http://localhost:4000/tasks/')
@@ -77,7 +82,7 @@ export default class ListProject extends React.Component {
         
         axios.get('http://localhost:4000/users/')
         .then(res => this.setState({
-            tasks: res.data.map(user => user),
+            users: res.data.map(user => user),
         }))
         .catch(err => console.log(err))
         
@@ -87,16 +92,20 @@ export default class ListProject extends React.Component {
                 updArray.map(proj => {
                     proj.tasks = (this.state.taskList.filter(task => task.project === proj._id))
                     proj.status = (proj.tasks.filter(task => task.status !== "Completed").length === 0? "Completed": "Not Completed")
-                    proj.cost = proj.tasks.reduce(function (accumulator, task) {
-                        return accumulator + (Number(task.hours) * 5); //todo add 
+                    console.log(proj.status)
+                    console.log(proj.tasks)
+                    proj.allUsers = this.state.users.map(user => user)
+                    proj.cost = (proj.status === "Completed")?(proj.tasks.reduce(function (accumulator, task) {
+                    let rate = proj.allUsers.filter(user => user._id === task.assignee)[0].hourlyRate;
+                    return accumulator + (Number(task.hours) * rate); //todo add 
                         
-                      }, 0);
+                      }, 0)):0
                 })
 
                 this.setState({
                     projectList: updArray
                 }) 
-                console.log(this.state.projectList);
+                //console.log(this.state.projectList);
 
         })
         .catch(err => console.log(err))
