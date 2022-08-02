@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import Table from 'react-bootstrap/Table';
+import React from "react";
 import MyNavbar from "./MyNavbar";
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
@@ -48,56 +47,72 @@ const ProjectItem = props => {
 )}
 
  
-function ListProject() {
-     const [projectList, setProjectsList] = useState([])
-     const [taskList, setTaskList] = useState([])
-     const [users, setUsersList] = useState([])
-     //const [updProjectList, setUpdList] = useState([])
+export default class ListProject extends React.Component {
+ 
+
+     constructor(props) {
+        super(props);
+
+        this.state = {
+            projectList: [],
+            taskList:[],
+            users: [],
+        }
+
+    };
+
+    list(){ 
+        return this.state.projectList.map(item => {
+        return <ProjectItem item={item} key={item._id} />;
+    }) 
+}
 
 
+    componentDidMount(){
+        axios.get('http://localhost:4000/tasks/')
+        .then(res => this.setState({
+            taskList: res.data.map(task => task),
+        }))
+        .catch(err => console.log(err))
+        
+        axios.get('http://localhost:4000/users/')
+        .then(res => this.setState({
+            tasks: res.data.map(user => user),
+        }))
+        .catch(err => console.log(err))
+        
+        axios.get('http://localhost:4000/projects/')
+        .then(res => {
+            let updArray = res.data;
+                updArray.map(proj => {
+                    proj.tasks = (this.state.taskList.filter(task => task.project === proj._id))
+                    proj.status = (proj.tasks.filter(task => task.status !== "Completed").length === 0? "Completed": "Not Completed")
+                    proj.cost = proj.tasks.reduce(function (accumulator, task) {
+                        return accumulator + (Number(task.hours) * 5); //todo add 
+                        
+                      }, 0);
+                })
 
-    useEffect(() => {
-        refreshProjectsList();
-    }, [])
+                this.setState({
+                    projectList: updArray
+                }) 
+                console.log(this.state.projectList);
 
-    function refreshProjectsList() {
-    
+        })
+        .catch(err => console.log(err))
 
-            axios.get('http://localhost:4000/tasks/')
-            .then(res => setTaskList(res.data))
-            .catch(err => console.log(err)).then(
-                axios.get('http://localhost:4000/users/')
-            .then(res => setUsersList(res.data))
-            .catch(err => console.log(err))).then(
-                axios.get('http://localhost:4000/projects/')
-            .then(res => {
-                let updArray = res.data;
-                    updArray.map(proj => {
-                        proj.tasks = (taskList.filter(task => task.project === proj._id))
-                        proj.status = (proj.tasks.filter(task => task.status !== "Completed").length === 0? "Completed": "Not Completed")
-                        proj.cost = proj.tasks.reduce(function (accumulator, task) {
-                            return accumulator + (Number(task.hours) * 5); //todo add user value
-                            
-                          }, 0);
-                    })
-                    setProjectsList(updArray);
-            })
-            .catch(err => console.log(err))).then(
-                console.log(projectList)
-            )
     }
 
-  return (
+render(){
+    return (
     <div>
         <MyNavbar />
         <CardGroup>
+            { this.list() }
             
-                    { projectList.map(item => {
-            return <ProjectItem item={item} key={item._id} />;
-        }) }
         </CardGroup>
     </div>
-  );
+  )
 }
-
-export default ListProject;
+  
+}
