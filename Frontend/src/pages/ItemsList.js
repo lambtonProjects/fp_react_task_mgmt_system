@@ -1,12 +1,53 @@
-import React from "react";
+import React, {useState} from "react";
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import Button from 'react-bootstrap/Button';
 import MyNavbar from "./MyNavbar";
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
 
 
-const TaskItem = props => (
+
+
+const TaskItem = props => {
+   const showModal = () => {
+    setShow(true);
+      };
+    
+      const hideModal = () => {
+        setShow(false);
+      };
+      const hideModalAndSave = () => {
+        setShow(false);
+        console.log(hours);
+
+        const task = {
+                    id: props.item._id,
+                    name: props.item.name,
+                    description: props.item.description,
+                    status: "Completed",
+                    startDate: props.item.startDate,
+                    endDate: props.item.endDate,
+                    assignee: props.item.assignee,
+                    project: props.item.project,
+                    hours: hours
+                }
+        
+                axios.post('http://localhost:4000/tasks/edit', task)
+                .then(res => console.log(res.data));
+                
+                window.location.reload(false);
+        
+      };
+
+      const [hours, setHours] = useState(0);
+      const onChangeHours=(e)=>{
+        setHours(e.target.value);
+    }
+
+    const [show, setShow] = useState(false);
+
+    return(
     
         <div>
         <Card style={{ margin: '1rem', padding: '1rem' }}>
@@ -37,18 +78,34 @@ const TaskItem = props => (
                 
                 window.location.reload(false);
             } else if (props.item.status === "Started") {
-                //todo change status to completed
-                //todo show message about hours
-                //todo save hours of work
-
+                setShow(true);
             }
             
         }} >{(props.item.status == "Not Started")?"Start Task":"Complete Task"}</Button> 
+        <Card.Text hidden={props.item.status !== "Completed"} >Hours: {props.item.hours}</Card.Text>
         </Card>
+        <Modal show={show} onHide={hideModal}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Complete task</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <input 
+                        type="number"
+                        name="hours"
+                        placeholder="hours"
+                        onChange={onChangeHours}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={hideModal}>Close</Button>
+                    <Button variant="primary" onClick={hideModalAndSave}>Save Changes</Button>
+                    </Modal.Footer>
+                </Modal>
+        
     </div>
 
      
-)
+)}
 
 
 export default class ItemsList extends React.Component{
@@ -56,24 +113,18 @@ export default class ItemsList extends React.Component{
     constructor(props) {
         super(props);
 
-        this.onChangeStatus = this.onChangeStatus.bind(this);
-
         this.state = {
             list: [],
             tasks:[],
-            isAdmin: true
+            isAdmin: true,
         }
+
     };
 
-    onChangeStatus(e){
-        console.log("from function");
-        this.setState({
-            //status: e.target.value //target is a textbox
-        });
-    }
+
     list(){
         return this.state.list.map(item => {
-            return <TaskItem item={item} key={item._id} user={this.state.isAdmin}/>;
+            return <TaskItem item={item} key={item._id} user={this.state.isAdmin} />;
         })
     }
     componentDidMount(){
