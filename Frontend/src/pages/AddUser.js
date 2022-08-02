@@ -94,7 +94,6 @@ render(){
                                     <label>Is Admin? </label>
                                     <input type="checkbox" 
                                     name="isAdmin" 
-                                    required 
                                     onChange={this.onChangeIsAdmin}
                                     value={this.state.isAdmin}/>
                                 </div> 

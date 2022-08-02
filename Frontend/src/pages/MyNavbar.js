@@ -27,7 +27,7 @@ function MyNavbar() {
             <Nav.Link href="/listUsers">Users</Nav.Link>
             <Nav.Link href="/listTask">Task</Nav.Link>
             <Nav.Link href="/list">Projects</Nav.Link>
-            <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
+            <NavDropdown title="Add" id="collasible-nav-dropdown">
               <NavDropdown.Item href="/addProject">Add Project</NavDropdown.Item>
               <NavDropdown.Item href="/addUser">Add User</NavDropdown.Item>
               <NavDropdown.Item href="/addTask">Add Task</NavDropdown.Item>
