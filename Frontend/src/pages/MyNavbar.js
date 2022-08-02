@@ -24,7 +24,8 @@ function MyNavbar() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#features">Users</Nav.Link>
+            <Nav.Link href="/listUsers">Users</Nav.Link>
+            <Nav.Link href="/listTask">Task</Nav.Link>
             <Nav.Link href="/list">Projects</Nav.Link>
             <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
               <NavDropdown.Item href="/addProject">Add Project</NavDropdown.Item>

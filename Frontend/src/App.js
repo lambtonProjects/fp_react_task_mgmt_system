@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
 import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard";
+import ListTask from "./pages/ListTask";
+import ListUsers from "./pages/ListUsers";
 import PrivateRoute from './pages/PrivateRoute';
 import Error from "./pages/Error";
 import ItemsList from "./pages/ItemsList";
@@ -23,6 +25,8 @@ function App() {
           </PrivateRoute>
         }/>
         <Route path="/*" element={<Error />} />
+        <Route path="/listTask" element={<ListTask />} />
+        <Route path="/listUsers" element={<ListUsers />} />
         <Route path="/list" element={<ItemsList />} />
         <Route path="/addProject" element={<AddProject />} />
         <Route path="/addUser" element={<AddUser />} />
