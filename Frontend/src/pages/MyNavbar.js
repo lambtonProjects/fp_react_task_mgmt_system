@@ -34,8 +34,8 @@ function MyNavbar() {
               <NavDropdown.Item href="/addUser">Add User</NavDropdown.Item>
               <NavDropdown.Item href="/addTask">Add Task</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
+              <NavDropdown.Item href="/allProjects">
+                All Projects
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
